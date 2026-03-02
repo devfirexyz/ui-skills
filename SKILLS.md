@@ -3,6 +3,7 @@
 ## First-Party (authored in this repo)
 
 - `neo-brutalist-ui-system/`
+- `inference-agent-ui/`
 
 ## Third-Party (mirrored snapshots)
 

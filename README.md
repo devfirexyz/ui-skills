@@ -8,6 +8,8 @@ This repo is organized to keep:
 
 - `neo-brutalist-ui-system/`
   - Your authored skill.
+- `inference-agent-ui/`
+  - Your authored skill.
 - `third_party_skills/`
   - Mirrored snapshots of skills from `~/.agents/skills`.
 - `scripts/sync-third-party-skills.sh`
@@ -22,17 +24,20 @@ This repo is organized to keep:
 Your skill lives here:
 
 `neo-brutalist-ui-system/`
+`inference-agent-ui/`
 
 Trigger:
 
 ```text
 $neo-brutalist-ui-system
+$inference-agent-ui
 ```
 
 Install from GitHub:
 
 ```bash
 npx skills add https://github.com/devfirexyz/ui-skills --skill neo-brutalist-ui-system
+npx skills add https://github.com/devfirexyz/ui-skills --skill inference-agent-ui
 ```
 
 Pinned install:
@@ -67,7 +72,7 @@ What sync does:
 If new skills are added in `~/.agents/skills`, use auto-discovery:
 
 ```bash
-AUTO_DISCOVER=1 FIRST_PARTY_SKILLS="neo-brutalist-ui-system" bash scripts/sync-third-party-skills.sh
+AUTO_DISCOVER=1 FIRST_PARTY_SKILLS="neo-brutalist-ui-system,inference-agent-ui" bash scripts/sync-third-party-skills.sh
 ```
 
 This will:
@@ -78,7 +83,7 @@ This will:
 If you have multiple first-party skills:
 
 ```bash
-AUTO_DISCOVER=1 FIRST_PARTY_SKILLS="neo-brutalist-ui-system,my-other-skill" bash scripts/sync-third-party-skills.sh
+AUTO_DISCOVER=1 FIRST_PARTY_SKILLS="neo-brutalist-ui-system,inference-agent-ui,my-other-skill" bash scripts/sync-third-party-skills.sh
 ```
 
 ---
@@ -112,7 +117,7 @@ bash scripts/sync-third-party-skills.sh
    - `description`
 3. Add scripts only if needed (`scripts/`).
 4. Add skill name to first-party list you use in sync command:
-   - `FIRST_PARTY_SKILLS="neo-brutalist-ui-system,<new-skill>"`
+   - `FIRST_PARTY_SKILLS="neo-brutalist-ui-system,inference-agent-ui,<new-skill>"`
 
 ---
 
@@ -152,7 +157,7 @@ bash scripts/sync-third-party-skills.sh
 Auto-discover + sync:
 
 ```bash
-AUTO_DISCOVER=1 FIRST_PARTY_SKILLS="neo-brutalist-ui-system" bash scripts/sync-third-party-skills.sh
+AUTO_DISCOVER=1 FIRST_PARTY_SKILLS="neo-brutalist-ui-system,inference-agent-ui" bash scripts/sync-third-party-skills.sh
 ```
 
 Check repo changes:
