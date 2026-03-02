@@ -20,8 +20,6 @@
   - `default_prompt` with `$neo-brutalist-ui-system`
 - Concrete `SKILL.md` description with trigger contexts.
 - Explicit mode language (`product-ui`, `marketing-page`) so users know what outputs to expect.
-- Optional visuals in `assets/screenshots/` generated from the user's own project.
-- Reusable starter in `assets/templates/` for fast first success.
 
 ## Suggested Publish Copy
 

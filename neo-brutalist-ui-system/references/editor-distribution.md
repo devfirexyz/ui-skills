@@ -11,7 +11,6 @@ Recommended:
 - `agents/openai.yaml`
 - `references/*`
 - `scripts/*`
-- `assets/templates/*`
 
 Rule:
 - Avoid editor-specific assumptions in core instructions. Keep `SKILL.md` generic and stack-aware.
@@ -44,4 +43,4 @@ Rule:
 
 - Use semantic tags (`v1.0.0`, `v1.1.0`) in Git for stable installs.
 - Keep breaking changes documented in commit messages.
-- Keep templates backward-compatible where possible.
+- Keep references and scripts backward-compatible where possible.

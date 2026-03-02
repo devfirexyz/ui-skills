@@ -20,8 +20,7 @@ Generate accessible tokens, apply section/component recipes, and ship portable o
    - `marketing-page` for hero-led marketing pages
 4. Apply generated tokens in the project theme file (`globals.css`, `app.css`, `theme.css`, etc.).
 5. Build components using `references/component-recipes.md`.
-6. Build full landing sections with `references/marketing-section-recipes.md` and `assets/templates/marketing_landing_template.jsx`.
-7. If requested, capture project-specific screenshots and add to `assets/screenshots/`.
+6. Build full landing sections with `references/marketing-section-recipes.md`.
 
 ## Workflow
 
@@ -77,10 +76,8 @@ Generate accessible tokens, apply section/component recipes, and ship portable o
 - `scripts/generate_blocky_palette.py`: Generate light/dark design tokens from two colors.
 - `references/component-recipes.md`: Generic component and layout recipes with shadcn-style patterns.
 - `references/marketing-section-recipes.md`: Generic landing-page section recipes.
-- `assets/templates/marketing_landing_template.jsx`: Reusable landing-page scaffold.
 - `references/publishing-skills-sh.md`: Publish checklist and listing expectations.
 - `references/editor-distribution.md`: Make this skill portable across Codex, Claude, OpenCode, and skills.sh.
-- `assets/screenshots/*.png`: Optional project-specific screenshots for the listing.
 
 ## Example Prompts
 
@@ -101,6 +98,6 @@ Generate accessible tokens, apply section/component recipes, and ship portable o
 ## Portability Standard
 
 - Keep all workflow instructions inside `SKILL.md` + `references/*` so the skill is self-contained.
-- Keep code templates in `assets/templates/*` for reuse instead of rewriting from scratch.
+- Keep reusable implementation patterns in `references/*` so the skill stays lightweight and portable.
 - Keep editor-specific metadata minimal in `agents/`; avoid platform lock-in.
 - When asked about distribution, follow `references/editor-distribution.md`.
