@@ -1,0 +1,13 @@
+# skill_name	source_rel_path	upstream	license	owner	notes
+find-skills	.agents/skills/find-skills	UNKNOWN	UNSPECIFIED	UNKNOWN	Installed via skills ecosystem; set upstream URL if known.
+frontend-design	.agents/skills/frontend-design	UNKNOWN	Apache-2.0 (see LICENSE.txt)	UNKNOWN	Design quality skill used for frontend polish.
+flutter-animations	.agents/skills/flutter-animations	UNKNOWN	UNSPECIFIED	Stanislav [MADTeacher] Chernyshev	Includes references/assets.
+flutter-expert	.agents/skills/flutter-expert	UNKNOWN	MIT	Jeffallan	Flutter specialist skill.
+performance	.agents/skills/performance	UNKNOWN	MIT	web-quality-skills	Web performance optimization guidance.
+shadcn-ui	.agents/skills/shadcn-ui	UNKNOWN	UNSPECIFIED	UNKNOWN	shadcn/ui component patterns.
+web-design-guidelines	.agents/skills/web-design-guidelines	UNKNOWN	UNSPECIFIED	vercel	UI guideline checker.
+web-perf	.agents/skills/web-perf	UNKNOWN	UNSPECIFIED	UNKNOWN	Chrome DevTools MCP performance audit skill.
+svelte-code-writer	.agents/skills/svelte-code-writer	UNKNOWN	UNSPECIFIED	UNKNOWN	Svelte 5 MCP-backed code writer skill.
+svelte5-best-practices	.agents/skills/svelte5-best-practices	UNKNOWN	MIT	ejirocodes	Svelte 5 runes/snippets/best-practices skill.
+vercel-react-best-practices	.agents/skills/vercel-react-best-practices	UNKNOWN	MIT	vercel	React and Next.js performance patterns from Vercel.
+vercel-react-native-skills	.agents/skills/vercel-react-native-skills	UNKNOWN	MIT	vercel	React Native and Expo best-practices skill.
