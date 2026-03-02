@@ -1,0 +1,116 @@
+name: Release On Main
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+permissions:
+  contents: write
+
+jobs:
+  tag-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Compute next version and release notes
+        id: version
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          latest_tag="$(git tag --list 'v*' --sort=-version:refname | head -n1 || true)"
+
+          if git describe --tags --exact-match >/dev/null 2>&1; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "reason=HEAD already has a tag" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if [ -z "$latest_tag" ]; then
+            next_tag="v1.0.0"
+            range="HEAD"
+          else
+            # Semantic-ish bump from commit history since last tag:
+            # breaking -> major, feat -> minor, else patch.
+            range="${latest_tag}..HEAD"
+            major="$(echo "$latest_tag" | sed -E 's/^v([0-9]+)\..*/\1/')"
+            minor="$(echo "$latest_tag" | sed -E 's/^v[0-9]+\.([0-9]+)\..*/\1/')"
+            patch="$(echo "$latest_tag" | sed -E 's/^v[0-9]+\.[0-9]+\.([0-9]+).*/\1/')"
+
+            if git log --format=%B "$range" | grep -qE 'BREAKING CHANGE|!:'; then
+              major="$((major + 1))"
+              minor=0
+              patch=0
+            elif git log --format=%s "$range" | grep -qE '^feat(\(.+\))?: '; then
+              minor="$((minor + 1))"
+              patch=0
+            else
+              patch="$((patch + 1))"
+            fi
+
+            next_tag="v${major}.${minor}.${patch}"
+          fi
+
+          notes="$(git log --pretty=format:'- %s (%h)' "$range")"
+          if [ -z "$notes" ]; then
+            notes="- Internal maintenance changes."
+          fi
+
+          latest_subject="$(git log -1 --pretty=%s)"
+
+          {
+            echo "skip=false"
+            echo "latest_tag=$latest_tag"
+            echo "next_tag=$next_tag"
+            echo "latest_subject=$latest_subject"
+            echo "notes<<EOF"
+            echo "$notes"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Create annotated git tag
+        if: steps.version.outputs.skip != 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag="${{ steps.version.outputs.next_tag }}"
+          previous="${{ steps.version.outputs.latest_tag }}"
+          subject="${{ steps.version.outputs.latest_subject }}"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          {
+            echo "$tag: automated release"
+            if [ -n "$previous" ]; then
+              echo
+              echo "Changes since $previous"
+            else
+              echo
+              echo "Initial release"
+            fi
+            echo
+            echo "${{ steps.version.outputs.notes }}"
+            echo
+            echo "Head commit: $subject"
+          } > tag-message.txt
+
+          git tag -a "$tag" -F tag-message.txt
+          git push origin "$tag"
+
+      - name: Create GitHub Release
+        if: steps.version.outputs.skip != 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.next_tag }}
+          name: "${{ steps.version.outputs.next_tag }} - ${{ steps.version.outputs.latest_subject }}"
+          body: |
+            ## What's Included
+            ${{ steps.version.outputs.notes }}
+          generate_release_notes: true
