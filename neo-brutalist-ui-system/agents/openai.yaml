@@ -1,0 +1,4 @@
+interface:
+  display_name: "Neo Brutalist UI Design System"
+  short_description: "Build reusable component systems and landing pages from two colors"
+  default_prompt: "Use $neo-brutalist-ui-system in marketing-page mode to generate a reusable landing page and component primitives from two base colors."
