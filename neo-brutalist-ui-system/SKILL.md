@@ -1,103 +1,171 @@
 ---
 name: neo-brutalist-ui-system
-description: Build reusable neo-brutalist design systems and landing pages with shadcn-style component APIs, strong typography, and adaptive two-color tokens. Use when users ask for bold UI systems, landing pages, section recipes, Tailwind/CVA architecture, or cross-project visual consistency.
+description: Apply a reusable neo-brutalist design system to existing or new frontend projects (landing, marketing, portfolio, dashboard, app surfaces) using strong typography, tokenized theming, and variant-driven component primitives. Preserve existing information architecture unless restructuring is explicitly requested.
 ---
 
 # Neo-Brutalist UI Design System Skill
 
-Implement a reusable design system for agent-built products with two modes:
-- `product-ui`: app surfaces and dashboards
-- `marketing-page`: hero-led landing pages
+Use this skill when users ask for bold, high-contrast UI refactors, reusable design systems, or full-page styling upgrades.
 
-Generate accessible tokens, apply section/component recipes, and ship portable outputs across frameworks and editors.
+This skill is design-system-first, not template-first.
+- Default behavior: preserve existing layout and content architecture.
+- Rebuild layouts only when explicitly requested.
 
-## Quick Start
+## Core Principles
 
-1. Collect `base` and `accent` colors (`#rrggbb`).
-2. Run `scripts/generate_blocky_palette.py --base <hex> --accent <hex>`.
-3. Choose style mode:
-   - `product-ui` for dashboards/apps
-   - `marketing-page` for hero-led marketing pages
-4. Apply generated tokens in the project theme file (`globals.css`, `app.css`, `theme.css`, etc.).
-5. Build components using `references/component-recipes.md`.
-6. Build full landing sections with `references/marketing-section-recipes.md`.
+- Typography drives hierarchy more than decoration.
+- Strong structure: `2px` borders, explicit separators, deliberate spacing.
+- Hard-edged surfaces: square corners by default on primary UI.
+- Direct interactions: translate + shadow reduction for active states.
+- Tokenize everything important (background/surface/text/border/accent/shadow).
+- Reuse existing app theme when present; generate missing tokens only.
+
+## Design DNA Extraction (Required First Step)
+
+Before editing, extract project design DNA from codebase:
+
+1. Global styling source
+- find global CSS/theme entry (`app.css`, `globals.css`, `theme.css`).
+- collect color variables, font declarations, theme toggling strategy.
+
+2. Typography roles
+- identify display/headline font, body font, technical/mono font, optional accent font.
+- map where each role is used (hero, nav, cards, metadata, captions).
+
+3. Primitive inventory
+- locate core UI primitives (button, card, input, textarea, dialog, dropdown, tabs, tooltip, progress, avatar, separators).
+- detect variant API style (`cva`, prop variants, class maps).
+
+4. Layout rhythm
+- identify section cadence (bordered slices, alternating surfaces, grid separators, CTA blocks).
+- identify motion style (hover transitions, reveal animations, duration patterns).
+
+5. Constraints
+- preserve information architecture unless user asks for restructure.
+- preserve brand tone and color intent unless user asks to rebrand.
+
+## Scope Modes
+
+- `component-only`: update tokens and primitive components only.
+- `layout-preserving` (default): restyle existing pages, keep same sections/content flow.
+- `layout-rebuild`: redesign section architecture (explicit user request required).
+
+## Reference Pattern Library (Derived from Lawn, Applied Generically)
+
+### Typography System
+- Display/headlines:
+  - very high weight (`800-900`)
+  - tight tracking
+  - uppercase for key headings/CTAs where tone supports it
+- Body/support copy:
+  - cleaner medium/regular weight
+  - reduced contrast tone for secondary text
+- Technical/meta text:
+  - monospaced role for timestamps, metrics, status labels
+- Optional accent typography:
+  - serif or stylistic contrast font for specific emphasis only (not everywhere)
+
+### Token Model
+Prefer this token family so output works across page types:
+- `--background`, `--background-alt`
+- `--surface`, `--surface-alt`, `--surface-strong`, `--surface-muted`
+- `--foreground`, `--foreground-muted`, `--foreground-subtle`, `--foreground-inverse`
+- `--border`, `--border-subtle`
+- `--accent`, `--accent-hover`, `--accent-light`
+- `--shadow-color`, `--shadow-accent`
+- semantic tokens: `--destructive`, `--success`, `--warning`
+
+### Theme Behavior
+- Support both light and dark token sets when the project already supports them.
+- Use `data-theme` switching for deterministic theme control where possible.
+- If project already persists theme state (local storage or framework state), preserve that flow.
+- Do not force dark mode redesigns on light-first products unless requested.
+
+### Primitive Patterns
+- Buttons:
+  - bold label, often uppercase
+  - `border-2`
+  - hard shadow
+  - hover/active translate by `1-2px`
+- Cards:
+  - strong border + structured internal header/content/footer spacing
+  - title emphasis via weight/tracking, not ornament
+- Inputs/Textareas:
+  - hard-edged, border-forward, clear focus border/shadow
+  - mono/meta-friendly when context is technical
+- Overlay components (dialog/dropdown/tooltip):
+  - maintain Radix accessibility behavior
+  - apply same border/shadow vocabulary as core surfaces
+- Data components (tabs/progress/badges):
+  - high-legibility state contrast
+  - avoid soft/ambiguous state styling
+- Exception rule:
+  - circular avatars are allowed when functionally expected.
+
+### Layout Patterns
+Apply across landing/marketing/portfolio/dashboard:
+- Section rhythm via border dividers and controlled spacing blocks.
+- Grid separators (`divide-x`/`divide-y` or explicit borders) for feature/data matrices.
+- Contrast bands (light vs dark or muted vs strong surfaces) to define narrative steps.
+- CTA zones with the strongest type/contrast, not necessarily the loudest color.
+- Dashboard/application screens prioritize utility clarity over marketing theatrics.
+
+### Motion Patterns
+- Use fast, explicit transitions (`120-200ms`) for hover/active state changes.
+- Use 1-2 meaningful entrance/reveal patterns max.
+- Avoid decorative animation noise that does not improve hierarchy or feedback.
 
 ## Workflow
 
-### 1. Confirm the UI direction
-- Ask for stack + scope first (`React/Tailwind`, `plain CSS`, `Vue`, `Svelte`, `RN-web`, full page vs components).
-- Choose mode:
-  - `product-ui`: restrained layout rhythm, clear utility-first surfaces.
-  - `marketing-page`: louder headline scale, sticker blocks, high-contrast CTAs.
-- Keep controls deliberate and high-contrast.
-- Prefer 2px borders and hard offset shadows over soft blur shadows.
-- Preserve fast interactions and avoid blocking states.
+### 1. Choose Intent + Scope
+- Define one-line aesthetic intent (example: "industrial editorial", "clean blocky utility").
+- Choose scope mode (default `layout-preserving`).
 
-### 2. Generate adaptive colors from two shades
-- Treat `base` as the structural color (background/surfaces).
-- Treat `accent` as action emphasis (buttons, focus, highlights).
-- Run the palette generator script and paste emitted `:root` and dark-theme tokens into the target stylesheet.
-- If contrast feels weak in context, rerun with adjusted colors instead of hand-editing many tokens.
+### 2. Establish/Map Tokens
+- If project already has tokens: map to the token model above and keep naming conventions.
+- If project lacks tokens: generate with script, then integrate.
 
-### 3. Assemble blocky components
-- Start from recipes in `references/component-recipes.md`.
-- Follow shadcn-style structure: primitive wrapper + `cva` variants + `cn` utility.
-- Prefer variants over one-off classes, regardless of framework.
-- Keep hover/active motion direct (`translate` + shadow reduction), not subtle opacity fades.
+Script:
+`python3 scripts/generate_blocky_palette.py --base "<hex>" --accent "<hex>" --format both`
 
-### 4. Compose layout sections
-- For app UI, keep hierarchy typographic with clean card/group rhythm.
-- For marketing pages, compose from:
-  - fixed bordered nav
-  - oversized headline hero
-  - rotated sticker blocks
-  - feature grid with `divide-x` / `divide-y`
-  - process cards with dark headers
-  - hard-border CTA strip
-- Use `references/marketing-section-recipes.md` for exact section patterns.
+### 3. Refactor Primitives First
+- Update primitives before page-level classes.
+- Prefer variant APIs over one-off per-page styles.
+- Keep class composition consistent (`cva` + shared util) when stack supports it.
 
-### 5. Enforce guardrails
-- Performance: avoid heavy visual effects and unnecessary client-side waterfalls.
-- Convenience: keep navigation direct and obvious.
-- Security: do not expose privileged actions without auth checks.
-- Responsiveness: verify mobile layouts (single-column fallbacks for multi-column sections).
+### 4. Apply to Layouts
+- `layout-preserving`: restyle existing sections without changing narrative/order.
+- `layout-rebuild`: propose new architecture first, then implement after alignment.
+- For dashboards/apps: emphasize information density control and scanability.
+- For landing/marketing/portfolio: emphasize hierarchy and narrative rhythm.
 
-## Shadcn Principles
+### 5. QA Pass
+- Responsiveness: no broken borders/overlaps at mobile/tablet/desktop.
+- Contrast: readable foreground/background across light and dark contexts.
+- Interaction: focus-visible states are clear; hover/active states remain intentional.
+- Consistency: primitives and page sections use same token/shadow/border language.
 
-- Keep components local to the project; treat them as owned source, not black-box dependencies.
-- Build from accessible primitives and preserve keyboard/focus behavior.
-- Use `class-variance-authority` for variant APIs (`variant`, `size`, state).
-- Use a shared `cn()` helper (`clsx` + `tailwind-merge`) for class composition.
-- Centralize theme values in CSS variables; consume variables inside component classes.
-- If shadcn is unavailable, mirror the same API ideas with local primitives and variant maps.
+## Output Contract
 
-## Resources
+Return:
+- Design DNA summary (fonts, token map, primitive inventory, layout rhythm found).
+- Changes implemented (primitives and/or layouts) with preserved vs rebuilt statement.
+- Token block updates (or mapping strategy when existing theme is reused).
+- Short rationale on hierarchy, readability, and interaction clarity.
 
-- `scripts/generate_blocky_palette.py`: Generate light/dark design tokens from two colors.
-- `references/component-recipes.md`: Generic component and layout recipes with shadcn-style patterns.
-- `references/marketing-section-recipes.md`: Generic landing-page section recipes.
-- `references/publishing-skills-sh.md`: Publish checklist and listing expectations.
-- `references/editor-distribution.md`: Make this skill portable across Codex, Claude, OpenCode, and skills.sh.
+## Script Usage After Install
+
+When installed, the script is bundled in this skill:
+- Agent run pattern:
+  - `python3 scripts/generate_blocky_palette.py --base "<hex>" --accent "<hex>" --format both`
+- Manual run pattern:
+  - `cd <installed-skill-path>/neo-brutalist-ui-system`
+  - `python3 scripts/generate_blocky_palette.py --base "#f2f1eb" --accent "#2f5f3a" --format both`
+
+Use script output as source-of-truth tokens, then map into project naming if needed.
 
 ## Example Prompts
 
-- "Use `$neo-brutalist-ui-system` in `marketing-page` mode to build a bold landing page with typographic hierarchy, hard borders, and blocky CTAs."
-- "Use `$neo-brutalist-ui-system` in `product-ui` mode to design a dashboard with base `#f2f1eb` and accent `#2f5f3a`."
-- "Create reusable card, button, and input variants with shadcn-style APIs and mobile-safe section layouts."
-- "Package this skill for cross-editor install and publish on skills.sh."
-
-## Output Standard
-
-- Return:
-  - A generated token block.
-  - Updated component classes/variants for the user's stack.
-  - Section plan (hero, features, process, CTA) when building marketing pages.
-  - A short rationale about contrast, hierarchy, and usability.
-  - Any screenshot paths used for sharing or listing (if provided).
-
-## Portability Standard
-
-- Keep all workflow instructions inside `SKILL.md` + `references/*` so the skill is self-contained.
-- Keep reusable implementation patterns in `references/*` so the skill stays lightweight and portable.
-- Keep editor-specific metadata minimal in `agents/`; avoid platform lock-in.
-- When asked about distribution, follow `references/editor-distribution.md`.
+- "Use `$neo-brutalist-ui-system` in `layout-preserving` mode; keep my current sections and apply a full design-system refactor."
+- "Use `$neo-brutalist-ui-system` in `component-only` mode and standardize button/card/input/dialog/dropdown/tabs to one tokenized style."
+- "Use `$neo-brutalist-ui-system` for my dashboard; keep the current IA, improve scanability, typography hierarchy, and interaction clarity."
