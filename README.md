@@ -10,6 +10,8 @@ This repo is organized to keep:
   - Your authored skill.
 - `inference-agent-ui/`
   - Your authored skill.
+- `dexiejs/`
+  - Your authored skill.
 - `third_party_skills/`
   - Mirrored snapshots of skills from `~/.agents/skills`.
 - `scripts/sync-third-party-skills.sh`
@@ -25,12 +27,14 @@ Your skill lives here:
 
 `neo-brutalist-ui-system/`
 `inference-agent-ui/`
+`dexiejs/`
 
 Trigger:
 
 ```text
 $neo-brutalist-ui-system
 $inference-agent-ui
+$dexiejs
 ```
 
 Install from GitHub:
@@ -38,6 +42,7 @@ Install from GitHub:
 ```bash
 npx skills add https://github.com/devfirexyz/ui-skills --skill neo-brutalist-ui-system
 npx skills add https://github.com/devfirexyz/ui-skills --skill inference-agent-ui
+npx skills add https://github.com/devfirexyz/ui-skills --skill dexiejs
 ```
 
 Pinned install:
@@ -72,7 +77,7 @@ What sync does:
 If new skills are added in `~/.agents/skills`, use auto-discovery:
 
 ```bash
-AUTO_DISCOVER=1 FIRST_PARTY_SKILLS="neo-brutalist-ui-system,inference-agent-ui" bash scripts/sync-third-party-skills.sh
+AUTO_DISCOVER=1 FIRST_PARTY_SKILLS="neo-brutalist-ui-system,inference-agent-ui,dexiejs" bash scripts/sync-third-party-skills.sh
 ```
 
 This will:
@@ -83,7 +88,7 @@ This will:
 If you have multiple first-party skills:
 
 ```bash
-AUTO_DISCOVER=1 FIRST_PARTY_SKILLS="neo-brutalist-ui-system,inference-agent-ui,my-other-skill" bash scripts/sync-third-party-skills.sh
+AUTO_DISCOVER=1 FIRST_PARTY_SKILLS="neo-brutalist-ui-system,inference-agent-ui,dexiejs,my-other-skill" bash scripts/sync-third-party-skills.sh
 ```
 
 ---
@@ -117,7 +122,7 @@ bash scripts/sync-third-party-skills.sh
    - `description`
 3. Add scripts only if needed (`scripts/`).
 4. Add skill name to first-party list you use in sync command:
-   - `FIRST_PARTY_SKILLS="neo-brutalist-ui-system,inference-agent-ui,<new-skill>"`
+   - `FIRST_PARTY_SKILLS="neo-brutalist-ui-system,inference-agent-ui,dexiejs,<new-skill>"`
 
 ---
 
@@ -157,7 +162,7 @@ bash scripts/sync-third-party-skills.sh
 Auto-discover + sync:
 
 ```bash
-AUTO_DISCOVER=1 FIRST_PARTY_SKILLS="neo-brutalist-ui-system,inference-agent-ui" bash scripts/sync-third-party-skills.sh
+AUTO_DISCOVER=1 FIRST_PARTY_SKILLS="neo-brutalist-ui-system,inference-agent-ui,dexiejs" bash scripts/sync-third-party-skills.sh
 ```
 
 Check repo changes:

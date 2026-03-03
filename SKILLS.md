@@ -4,6 +4,7 @@
 
 - `neo-brutalist-ui-system/`
 - `inference-agent-ui/`
+- `dexiejs/`
 
 ## Third-Party (mirrored snapshots)
 
